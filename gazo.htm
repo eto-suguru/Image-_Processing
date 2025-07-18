@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>画像情報処理 試験問題・詳細解法</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;700&display=swap" rel="stylesheet">
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>
+    MathJax = {
+        tex: {
+            inlineMath: [['$', '$'], ['\\(', '\\)']],
+            displayMath: [['$$', '$$'], ['\\[', '\\]']]
+        }
+    };
+    </script>
+    <style>
+        body {
+            font-family: 'Noto Sans JP', sans-serif;
+            line-height: 1.8;
+            background-color: #f8f9fa;
+            color: #212529;
+            margin: 0;
+            padding: 20px;
+        }
+        .container {
+            width: 90%;
+            max-width: 850px;
+            margin: 20px auto;
+            background-color: #ffffff;
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+        }
+        h1, h2, h3, h4, h5 {
+            margin: 0;
+            padding: 0;
+            font-weight: 700;
+        }
+        h1 {
+            color: #343a40;
+            border-bottom: 2px solid #dee2e6;
+            padding-bottom: 15px;
+            margin-bottom: 25px;
+            font-size: 2.2em;
+        }
+        h2 {
+            color: #495057;
+            border-left: 5px solid #007bff;
+            padding-left: 15px;
+            margin-top: 45px;
+            margin-bottom: 20px;
+            font-size: 1.7em;
+        }
+        h3 {
+            color: #343a40;
+            border-bottom: 1px solid #e9ecef;
+            padding-bottom: 10px;
+            margin-top: 35px;
+            font-size: 1.4em;
+        }
+        h4 {
+            color: #495057;
+            margin-top: 30px;
+            font-size: 1.15em;
+        }
+        h5 {
+            color: #6c757d;
+            font-size: 1em;
+            margin-top: 20px;
+            margin-bottom: 8px;
+        }
+        p, li {
+            font-size: 1em;
+            margin-bottom: 1.2em;
+        }
+        a {
+            color: #0056b3;
+            text-decoration: none;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+        .question-section, .solution-section {
+            margin-top: 30px;
+        }
+        .question-text {
+            background-color: #f8f9fa;
+            border-left: 3px solid #ced4da;
+            padding: 15px;
+            margin-bottom: 20px;
+        }
+        .spec-box {
+            background-color: #e6f7ff;
+            border: 1px solid #91d5ff;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 40px;
+        }
+        .final-answer {
+            background-color: #f6ffed;
+            border: 1px solid #b7eb8f;
+            padding: 10px 15px;
+            margin-top: 15px;
+            border-radius: 5px;
+            font-weight: bold;
+        }
+        .reference {
+            font-size: 0.85em;
+            color: #6c757d;
+            text-align: right;
+            margin-top: 20px;
+            padding-top: 10px;
+            border-top: 1px dashed #ced4da;
+        }
+        code {
+            font-family: Consolas, 'Courier New', monospace;
+            background-color: #e9ecef;
+            padding: 3px 7px;
+            border-radius: 4px;
+            font-size: 0.9em;
+        }
+        pre {
+            background-color: #e9ecef;
+            padding: 15px;
+            border-radius: 5px;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+            font-family: Consolas, 'Courier New', monospace;
+            font-size: 0.9em;
+            line-height: 1.5;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>画像情報処理 試験問題・詳細解法</h1>
+
+        <div class="spec-box">
+            <h3>本ドキュメントの作成仕様書</h3>
+            <ul>
+                <li><b>出力形式:</b> <code>&lt;!DOCTYPE html&gt;</code> から <code>&lt;/html&gt;</code> までの完全なHTMLコードのみで出力する。</li>
+                <li><b>デザイン:</b> モダンで読みやすいシンプルなデザインを採用し、ウィンドウ幅に応じてコンテンツ幅が可変するレスポンシブデザインとする。</li>
+                <li><b>数式:</b> MathJax形式を使用し、インラインは<code>$...$</code>、ブロックは<code>$$...$$</code>で記述する。</li>
+                <li><b>書式と表現:</b> 太字は<code>&lt;b&gt;</code>タグを使用。「。」の後で必ず改行し、可読性を高める。導出過程の推移を明確に記述し、初心者に向けた比喩や具体例を用いた解説を加える。</li>
+                <li><b>参照資料へのリンク:</b> 参照資料のファイル名をクリックすると、同じディレクトリにあるPDFが新しいタブで開くようにリンクを設定する。</li>
+            </ul>
+        </div>
+        
+        <h2>問題1</h2>
+        <div class="question-text">
+            <p>医療画像をデジタル化する際に、画像の量子化と標本化を考える必要がある。<br>例えば、画素値の量子化レベルを12ビットで線形的に表現すると、被写体実際の違いを最大 (A) 段階まで確実に区別できる。<br>また、100cm X 100cm の領域をちょうど一枚の画像に収めた時、被写体の中の 1cm の形状の違いを確実に画素によって区別できるようにするには、画像を記録する画素数は少なくとも (B) となる。</p>
+        </div>
+        <div class="solution-section">
+            <h3>解法</h3>
+            <h4>(A) 量子化レベル</h4>
+            <p><b>量子化</b>とは、色の濃淡のような連続的な情報を、デジタルの段階的な数値に分けることです。<br>12ビットの場合、表現できる色の段階は $2^{12}$ と計算できます。</p>
+            <pre>$2^{12} = 4096$</pre>
+            <div class="final-answer">(A)の回答: <b>4096段階</b></div>
+            
+            <h4>(B) 標本化（画素数）</h4>
+            <p><b>標本化</b>とは、連続的な景色を、方眼紙のマス目（画素）で区切って記録することです。<br>100cmの領域内で1cmの物を見分けるには、1つの辺あたり少なくとも100個のマス目が必要です。</p>
+            <pre>100画素 × 100画素 = 10000画素</pre>
+            <div class="final-answer">(B)の回答: <b>100x100</b></div>
+            
+            <p class="reference">（参照： <a href="第2講.pdf" target="_blank">第2講.pdf</a>, p.2, 6）</p>
+        </div>
+
+        <h2>問題2</h2>
+        <div class="question-text">
+            <p>次の画像とフィルターを使って、以下の問を答えよ。</p>
+        </div>
+        <div class="solution-section">
+            <h3>解法</h3>
+            <h4>A) オリジナル画像の可変閾値処理をした画素 A の結果を求めよ。</h4>
+            <p>注目画素の「周囲の明るさ」を基準（閾値）にして、その画素を白黒に振り分ける処理です。</p>
+            <h5>ステップ1: 必要なデータ行列</h5>
+            <p>注目画素Aを中心とする3x3領域（表A）</p>
+            <pre>142  146  149
+145  146  146
+143  148  144</pre>
+            <h5>ステップ2: 適用する計算式</h5>
+            <p><code>出力 = (注目画素値 > 近傍領域の平均値) ? 1 : 0</code></p>
+            <h5>ステップ3: 導出過程</h5>
+            <p>平均値(閾値) = $(142 + ... + 144) \div 9 = 1309 \div 9 \approx 145.44$<br>
+            注目画素(146)と閾値を比較 → $146 > 145.44$</p>
+            <div class="final-answer">回答: <b>1 (白)</b></div>
+
+            <h4>B) オリジナル画像の sobel 変換した画素 B の結果を求めよ。</h4>
+            <p>Sobelフィルタは、画像の特定地点での「明るさの坂道」の急さを計算します。</p>
+            <h5>ステップ1: 必要なデータ行列</h5>
+            <p>注目画素Bを中心とする3x3領域（表B）とSobelフィルター</p>
+            <pre>近傍領域:         Gxフィルター:        Gyフィルター:
+149  144  144      -1   0   1         -1  -2  -1
+146  231  224      -2   0   2          0   0   0
+144  146  149      -1   0   1          1   2   1
+            </pre>
+            <h5>ステップ2: 適用する計算式</h5>
+            <p>$|G| = \sqrt{G_x^2 + G_y^2}$</p>
+            <h5>ステップ3: 導出過程</h5>
+            <p>$G_x = (144 - 149) + 2(224 - 146) + (149 - 144) = 156$<br>
+            $G_y = (144 - 149) + 2(146 - 144) + (149 - 144) = 4$<br>
+            $|G| = \sqrt{156^2 + 4^2} = \sqrt{24352}$</p>
+            <div class="final-answer">回答: <b>約156.05</b></div>
+            <p class="reference">（参照： <a href="第8講_エッジ検出.pdf" target="_blank">第8講_エッジ検出.pdf</a>, p.16, 20）</p>
+
+            <h4>C) オリジナル画像のラプラシアン変換した画素 C の結果を求めよ。</h4>
+            <p>ラプラシアンフィルタは、明るさの変化が最も大きいエッジの中心を検出します。</p>
+            <h5>ステップ1: 必要なデータ行列</h5>
+            <p>注目画素Cを中心とする3x3領域（表C）</p>
+            <pre>144  145  143
+224  138  144
+149  148  188</pre>
+            <h5>ステップ2: 適用する計算式</h5>
+            <p><code>出力 = (上下左右の和) - 4 * (中心)</code></p>
+            <h5>ステップ3: 導出過程</h5>
+            <p><code>(145 + 148 + 224 + 144) - 4 * 138 = 661 - 552</code></p>
+            <div class="final-answer">回答: <b>109</b></div>
+            <p class="reference">（参照： <a href="第8講_エッジ検出.pdf" target="_blank">第8講_エッジ検出.pdf</a>, p.28）</p>
+
+            <h4>D) オリジナル画像を考えられたフィルターと畳み込みした画素 D 結果を求めよ。</h4>
+            <p><b>畳み込み</b>は、フィルターを画像に重ねて、新しい画素値を計算する基本操作です。</p>
+            <h5>ステップ1: 必要なデータ行列</h5>
+            <p>注目画素Dを中心とする3x3領域（表D）と与えられたフィルター</p>
+            <pre>近傍領域:         フィルター:
+143  148  144       3   0  -2
+215  233  245       0   3   0
+135   48  124      -2   0   3</pre>
+            <h5>ステップ2: 導出過程</h5>
+            <pre><code>(143*3)+(148*0)+(144*-2) = 429 - 288
++(215*0)+(233*3)+(245*0) =   0 + 699 + 0
++(135*-2)+( 48*0)+(124*3) = -270 + 0 + 372
+---------------------------------------------
+合計 = 942</code></pre>
+            <div class="final-answer">回答: <b>942</b></div>
+            <p class="reference">（参照： <a href="第6講_多値画像の前処理.pdf" target="_blank">第6講_多値画像の前処理.pdf</a>, p.21）</p>
+
+            <h4>E) 渦巻き型ディザ処理した画素 E 結果を求めよ。</h4>
+            <p><b>ディザ処理</b>は、白黒2値しか使えない環境で、点の密度を変えることで中間色を擬似的に表現する手法です。</p>
+            <h5>ステップ1: 量子化</h5>
+            <p>画素Eの値<code>216</code>を0～15の16段階に変換: $floor(216 / 16) = 13$</p>
+            <h5>ステップ2: ディザ行列の値を取得</h5>
+            <p>画素Eの元の座標<code>(i=5, j=4)</code>に対応する4x4渦巻き型行列の値は<b>15</b>です。</p>
+            <h5>ステップ3: 比較と二値化</h5>
+            <p><code>量子化値(13) < ディザ行列の値(15)</code></p>
+            <div class="final-answer">回答: <b>0 (黒)</b></div>
+            <p class="reference">（参照： <a href="第7講_多値画像の擬似表現.pdf" target="_blank">第7講_多値画像の擬似表現.pdf</a>, p.12, 16）</p>
+            
+            <h4>F) オリジナル画像を閾値147で二値化した後画像を Openning 処理した画素 F の結果を求めよ。</h4>
+            <p><b>Opening処理</b>は、画像の小さな突起やノイズを削り取る処理で、<b>収縮 → 膨張</b>の順に行います。</p>
+            <h5>ステップ1: 閾値147で二値化 (表Fより)</h5>
+            <pre>二値化後の領域:
+1  1  1
+1  1  1
+1  0  0</pre>
+            <h5>ステップ2: 収縮 (Erosion)</h5>
+            <p>中心画素(1)の8近傍に0が含まれるため、収縮後、中心は<b>0</b>になります。</p>
+            <h5>ステップ3: 膨張 (Dilation)</h5>
+            <p>収縮後の画像に対し、中心画素(0)の8近傍に1が残っているため、膨張後、中心は<b>1</b>に戻ります。</p>
+            <div class="final-answer">回答: <b>1 (白)</b></div>
+            <p class="reference">（参照： <a href="第5講_モフォーロジと細線化.pdf" target="_blank">第5講_モフォーロジと細線化.pdf</a>, p.1）</p>
+        </div>
+
+        <h2>問題3</h2>
+        <div class="question-text">
+            <p>画像 A の高周波数成分をフーリエ変換を利用して抽出する過程を説明せよ。</p>
+        </div>
+        <div class="solution-section">
+            <h3>解法</h3>
+            <p>この問題では、フーリエ変換を用いて高周波成分を抽出する「プロセス」を説明することが求められます。</p>
+            <ol>
+                <li><b>フーリエ変換:</b> 元画像をフーリエ変換し、周波数スペクトルに変換します。</li>
+                <li><b>ハイパスフィルタ作成:</b> 周波数スペクトルの中心（低周波）を0にし、周辺（高周波）を1にするフィルタを作成します。</li>
+                <li><b>フィルタリング:</b> 周波数スペクトルにハイパスフィルタを掛け合わせ、低周波成分を除去します。</li>
+                <li><b>逆フーリエ変換:</b> 結果を逆フーリエ変換し、高周波成分（エッジなど）が強調された画像に戻します。</li>
+            </ol>
+            <div class="final-answer">回答: 上記の4つのステップを順に説明する。</div>
+            <p class="reference">（参照： <a href="10講_フーリエ変換.pdf" target="_blank">10講_フーリエ変換.pdf</a>, p.37）</p>
+        </div>
+        
+        <h2>問題4</h2>
+        <div class="question-text">
+            <p>画像 A の中にあるパターン B が存在するかどうかを検出する過程を説明せよ。<br>また、SSDA と KS 検定の方法についても説明せよ。</p>
+        </div>
+        <div class="solution-section">
+            <h3>解法</h3>
+            <p>この問題では、3つの項目（検出過程、SSDA、KS検定）について、それぞれの手法を説明することが求められます。</p>
+            <h4>検出過程 (テンプレートマッチング)</h4>
+            <p>お手本（テンプレートB）を画像Aの上でスライドさせながら各位置で類似度を計算し、最も類似度が高い位置を検出結果とするプロセスを説明します。<br>
+            <span class="reference">（参照： <a href="12講_画像認識、テクスチャ解析と動画像処理.pdf" target="_blank">12講_画像認識、テクスチャ解析と動画像処理.pdf</a>, p.4）</span></p>
+
+            <h4>SSDA (Sequential Similarity Detection Algorithm)</h4>
+            <p>テンプレートと画像の対応領域で、画素値の差の絶対値の和（または二乗和）を「誤差」として計算し、この誤差が最小になる位置を一致点とする手法であることを説明します。<br>
+            <span class="reference">（参照： <a href="12講_画像認識、テクスチャ解析と動画像処理.pdf" target="_blank">12講_画像認識、テクスチャ解析と動画像処理.pdf</a>, p.5）</span></p>
+
+            <h4>KS検定 (Kolmogorov-Smirnov Test)</h4>
+            <p>画素値の「分布の形」を比較する統計的手法であること。<br>テンプレートと画像領域それぞれの累積度数分布を求め、その差の最大値が閾値以下であれば一致と判断する方法であることを説明します。<br>
+            <span class="reference">（参照： <a href="第11講_セグメンテーション.pdf" target="_blank">第11講_セグメンテーション.pdf</a>, p.2-3）</span></p>
+            <div class="final-answer">回答: 上記の3つの手法の概要とプロセスをそれぞれ記述する。</div>
+        </div>
+    </div>
+</body>
+</html>
